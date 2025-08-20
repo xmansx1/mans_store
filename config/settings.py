@@ -84,9 +84,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"          # للإنتاج
 STATICFILES_DIRS = [BASE_DIR / "static"]        # أثناء التطوير
 
 STORAGES = {
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
-    "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},  # رفع media إلى Cloudinary
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+    "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
 }
+
 
 # ----------------- Cloudinary -----------------
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
