@@ -1,8 +1,8 @@
-# config/settings.py
 from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+# تحميل متغيرات البيئة من .env (محلياً)
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +27,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # تطبيقات المشروع
     "products",
+
+    # Cloudinary للتخزين السحابي
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 # ----------------- Middleware -----------------
@@ -63,7 +68,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # ----------------- قاعدة البيانات -----------------
-# SQLite للتطوير (بدّلها بسهولة إلى PostgreSQL عند الإنتاج)
+# SQLite للتطوير (يمكن استبدالها بـ PostgreSQL لاحقاً)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -71,25 +76,25 @@ DATABASES = {
     }
 }
 
-# ----------------- الملفات الثابتة والإعلامية -----------------
-STATIC_URL = "static/"
+# ----------------- الملفات الثابتة -----------------
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"          # للإنتاج
 STATICFILES_DIRS = [BASE_DIR / "static"]        # أثناء التطوير
+
 STORAGES = {
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},  # رفع media إلى Cloudinary
 }
 
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# ----------------- Cloudinary -----------------
+CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
 
 # ----------------- إعدادات تيليجرام للتنبيهات -----------------
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
-# مفتاح تشغيل/إيقاف (اختياري) — فعّل/عطّل من .env
 TELEGRAM_ENABLED = os.getenv("TELEGRAM_ENABLED", "true").lower() == "true" and bool(TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID)
 
-# ----------------- LOGGING (لتتبع مشاكل الإرسال وغيرها) -----------------
+# ----------------- LOGGING -----------------
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -98,7 +103,6 @@ LOGGING = {
     },
     "root": {"handlers": ["console"], "level": "INFO"},
     "loggers": {
-        # ضع مستوى أهدأ لو حاب تقلل الضوضاء
         "django.request": {"handlers": ["console"], "level": "WARNING", "propagate": True},
         "products": {"handlers": ["console"], "level": "INFO", "propagate": True},
     },
