@@ -84,9 +84,14 @@ STATIC_ROOT = BASE_DIR / "staticfiles"          # للإنتاج
 STATICFILES_DIRS = [BASE_DIR / "static"]        # أثناء التطوير
 
 STORAGES = {
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
-    "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"
+    },
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
+    },
 }
+
 
 
 # ----------------- Cloudinary -----------------
