@@ -21,6 +21,8 @@ USE_TZ = True
 
 # ----------------- التطبيقات -----------------
 INSTALLED_APPS = [
+    "jazzmin",  # لوحة تحكم محسنة (يجب أن تسبق admin)
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -69,30 +71,32 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # ----------------- قاعدة البيانات -----------------
-# قاعدة بيانات PostgreSQL من Render
 DATABASES = {
     "default": dj_database_url.config(
         default=os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600,
-        ssl_require=not DEBUG,  # يجبر على SSL في الإنتاج
+        ssl_require=not DEBUG,
     )
 }
 
 # ----------------- الملفات الثابتة -----------------
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"          # للإنتاج
-STATICFILES_DIRS = [BASE_DIR / "static"]        # أثناء التطوير
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STORAGES = {
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"
+        # CompressedManifestStaticFilesStorage أفضل للإنتاج
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     },
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
     },
 }
 
-
+# ----------------- الوسائط -----------------
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # ----------------- Cloudinary -----------------
 CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
@@ -100,7 +104,10 @@ CLOUDINARY_URL = os.getenv("CLOUDINARY_URL", "")
 # ----------------- إعدادات تيليجرام للتنبيهات -----------------
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
-TELEGRAM_ENABLED = os.getenv("TELEGRAM_ENABLED", "true").lower() == "true" and bool(TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID)
+TELEGRAM_ENABLED = (
+    os.getenv("TELEGRAM_ENABLED", "true").lower() == "true"
+    and bool(TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID)
+)
 
 # ----------------- LOGGING -----------------
 LOGGING = {
@@ -116,10 +123,6 @@ LOGGING = {
     },
 }
 
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
 # ----------------- إعدادات أمن إضافية (للإنتاج) -----------------
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
@@ -130,3 +133,22 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_SSL_REDIRECT = True
+
+# ----------------- إعدادات Jazzmin -----------------
+JAZZMIN_SETTINGS = {
+    "site_title": "لوحة التحكم - منصة المتجر",
+    "site_header": "منصة المتجر",
+    "site_brand": "إدارة المتجر",
+    "welcome_sign": "مرحباً بك في لوحة الإدارة",
+    "copyright": "حقوق النشر © منصور",
+    "show_ui_builder": False,
+
+    # أيقونات التطبيقات
+    "icons": {
+        "auth": "fas fa-users",
+        "products": "fas fa-store",
+    },
+
+    # الثيم
+    "theme": "lux",  # ممكن تغييره مثل (cyborg, cosmo, flatly, solar, minty, ...)
+}
