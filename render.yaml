@@ -9,7 +9,6 @@ services:
       python manage.py migrate --noinput
       python manage.py collectstatic --noinput
       python manage.py create_admin
-
     startCommand: gunicorn config.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
@@ -21,7 +20,7 @@ services:
       - key: DEBUG
         value: "false"
       - key: ALLOWED_HOSTS
-        value: 127.0.0.1,localhost,mans-store.onrender.com
+        value: 127.0.0.1,localhost,.onrender.com
       - key: TIME_ZONE
         value: Asia/Riyadh
       - key: TELEGRAM_ENABLED
@@ -33,7 +32,7 @@ services:
       - key: CLOUDINARY_URL
         value: cloudinary://997257163374881:u5XPED3CQa2gd7PyHuEaw7BFsbY@dvptglfs2
 
-      # إنشاء superuser تلقائيًا (Django سيستخدم هذه القيم عند --noinput)
+      # إنشاء superuser تلقائيًا
       - key: DJANGO_SUPERUSER_USERNAME
         value: admin
       - key: DJANGO_SUPERUSER_EMAIL

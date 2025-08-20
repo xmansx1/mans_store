@@ -110,6 +110,10 @@ LOGGING = {
     },
 }
 
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # ----------------- إعدادات أمن إضافية (للإنتاج) -----------------
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
