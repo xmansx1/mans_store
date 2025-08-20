@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>مانس للتجارة — تقسيط الأجهزة (جديد / مستعمل)</title>
+
+  <!-- Bootstrap RTL + ملفات الواجهة -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link href="/static/css/site.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- SEO -->
+  <meta name="description" content="مانس للتجارة — تقسيط الأجهزة جديد ومستعمل. اختر جهازك وانتقل مباشرة لصفحة المتجر للدفع بأمان.">
+  <meta name="theme-color" content="#22c55e">
+
+  <style>
+    :root{
+      --primary-color:#2563eb;
+      --secondary-color:#3b82f6;
+      --accent-color:#22c55e;
+      --dark-color:#0f172a;
+      --muted:#64748b;
+      --card-r:16px;
+      --shadow:0 6px 15px rgba(0,0,0,.08);
+    }
+    html,body{font-family:"Tajawal",system-ui,"Noto Kufi Arabic",Arial,sans-serif;background:#f5f7fa}
+    /* شريط علوي */
+    .navbar-custom{
+      background:linear-gradient(135deg,var(--primary-color),var(--secondary-color));
+      box-shadow:0 4px 12px rgba(0,0,0,.1);
+    }
+    .brand{display:flex;align-items:center;gap:.75rem}
+    .brand-logo{height:44px;width:auto;border-radius:10px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.1);background:#fff}
+    .brand-title{line-height:1}
+    .brand-sub{opacity:.85}
+
+    /* إعلان لافت */
+    .sticky-note{
+      background:linear-gradient(135deg,#fef08a,#fde047);
+      color:#854d0e;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.06)
+    }
+
+    /* مميزات */
+    .feature{background:#fff;padding:12px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.06);transition:transform .2s ease, box-shadow .25s ease}
+    .feature:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.08)}
+
+    /* كروت المنتجات */
+    .product-card{border:none;border-radius:var(--card-r);box-shadow:var(--shadow);height:100%;display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease, box-shadow .3s ease}
+    .product-card:hover{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,.15)}
+    .product-img-wrap{position:relative;height:220px;background:#fff;display:flex;align-items:center;justify-content:center}
+    .product-card img{width:100%;height:100%;object-fit:contain;padding:16px;transition:transform .4s ease}
+    .product-card:hover img{transform:scale(1.04)}
+    .badge-wrap{position:absolute;top:10px;left:10px;display:flex;gap:.375rem}
+    .chip{--b:#e2e8f0;--bg:#f8fafc;border:1px solid var(--b);background:var(--bg);border-radius:999px;padding:.25rem .5rem;font-weight:700;color:#0f172a;font-size:.75rem}
+    .chip-primary{background:#dbeafe;border-color:#bfdbfe;color:#1e40af}
+    .price{font-weight:800;color:var(--primary-color);font-size:1.25rem}
+    .meta{color:var(--muted);font-size:.9rem}
+    .two-lines{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+    /* أزرار */
+    .btn-success{background:var(--accent-color);border-color:var(--accent-color);font-weight:700}
+    .btn-success:hover{background:#16a34a;border-color:#16a34a;transform:translateY(-1px)}
+    .btn-outline-primary{border-width:2px;font-weight:700}
+
+    /* المودال */
+    .modal-content{border:none;border-radius:18px;box-shadow:0 20px 40px rgba(0,0,0,.2)}
+    .modal-header{border-bottom:1px solid #e2e8f0}
+
+    /* توست */
+    .toast-custom{border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.15)}
+
+    /* فوتر */
+    footer{background:#0b1220;color:#e2e8f0}
+    footer a{color:#94a3b8}
+    footer a:hover{color:#fff}
+
+    /* ريسبونسف */
+    @media(max-width:768px){.product-img-wrap{height:180px}}
+    @media(max-width:576px){.product-img-wrap{height:160px}}
+
+    /* أيقونة الإعلان */
+    .promo-icon{
+      width:42px;height:42px;border-radius:12px;
+      background: linear-gradient(135deg,#22c55e,#16a34a);
+      color:#0b1b13;font-size:1.1rem;
+      box-shadow: 0 6px 14px rgba(22,163,74,.25);
+    }
+    .sticky-note u{ text-underline-offset: 3px; }
+  </style>
+</head>
+<body class="bg-light">
+
+<!-- Toasts -->
+<div id="toastContainer" class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index:1080"></div>
+{% if messages %}
+<script>
+  window.__serverMsgs = [
+    {% for m in messages %}
+      {text: "{{ m|escapejs }}", level: "{{ m.tags|default:'info' }}"}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ];
+</script>
+{% endif %}
+
+<!-- شريط علوي مع اللوقو والعنوان -->
+<header class="navbar-custom py-3 text-white shadow-sm sticky-top">
+  <div class="container d-flex align-items-center justify-content-between">
+    <div class="brand animate__animated animate__fadeIn">
+      <img src="/static/img/LOGO1.jpg" alt="شعار مانس للتجارة" class="brand-logo">
+      <div class="brand-title">
+        <h1 class="h4 m-0 fw-bold">مانس للتجارة</h1>
+        <p class="m-0 brand-sub">بيع وشراء الأجهزة — <strong>جديد</strong> / <strong>مستعمل</strong></p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- إعلان تسويقي لافت -->
+<section class="promo-banner py-3 animate__animated animate__fadeInDown">
+  <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 text-center text-md-start">
+    <!-- أيقونة -->
+    <div class="promo-icon d-flex align-items-center justify-content-center">
+      <i class="fa-solid fa-sack-dollar"></i>
+    </div>
+
+    <!-- النص -->
+    <div class="promo-text fw-bold">
+      <h2 class="h5 m-0">سيولة فورية بلا تعقيد 🚀</h2>
+      <p class="m-0 mt-1">
+        اشترِ جهازك الآن من المتجر، وإذا احتجت سيولة نشتريه منك مباشرة ونحوّل المبلغ لحسابك
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- تنسيقات CSS -->
+<style>
+  .promo-banner {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,.15);
+    margin: 1rem auto;
+    max-width: 900px;
+  }
+  .promo-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    background: #fff;
+    color: #16a34a;
+    font-size: 1.6rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+  }
+  .promo-text h2 {
+    font-weight: 800;
+    font-size: 1.3rem;
+  }
+  .promo-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+</style>
+
+
+<!-- مميزات مختصرة -->
+<section class="py-4 bg-white border-bottom">
+  <div class="container">
+    <div class="row g-3 text-center">
+      <div class="col-6 col-md-3"><div class="feature"><i class="fa-solid fa-bolt ms-1"></i> موافقة شبه فورية</div></div>
+      <div class="col-6 col-md-3"><div class="feature"><i class="fa-solid fa-credit-card ms-1"></i> دعم جميع البطاقات</div></div>
+      <div class="col-6 col-md-3"><div class="feature"><i class="fa-solid fa-truck ms-1"></i> تسليم سريع</div></div>
+      <div class="col-6 col-md-3"><div class="feature"><i class="fa-solid fa-shield-halved ms-1"></i> دفع آمن عبر المتجر</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- شبكة المنتجات -->
+<main id="products" class="py-4">
+  <div class="container">
+    {% if products %}
+      <div class="row g-4">
+        {% for p in products %}
+        <div class="col-md-6 col-lg-4">
+          <article class="card product-card animate__animated animate__fadeInUp">
+            <div class="product-img-wrap">
+              {% if p.image %}
+                <img src="{{ p.image.url }}" loading="lazy" decoding="async" alt="{{ p.name|default:'منتج' }}">
+              {% else %}
+                <img src="/static/img/placeholder.jpg" loading="lazy" decoding="async" alt="لا توجد صورة">
+              {% endif %}
+              <div class="badge-wrap">
+                {% if p.category %}<span class="chip">{{ p.category }}</span>{% endif %}
+                {% if p.badge %}<span class="chip chip-primary">{{ p.badge }}</span>{% endif %}
+              </div>
+            </div>
+            <div class="p-3 d-flex flex-column">
+              <h3 class="h6 fw-bold mb-1 two-lines">{{ p.name }}</h3>
+              {% if p.details %}<p class="meta two-lines mb-2">{{ p.details }}</p>{% endif %}
+              <div class="d-flex align-items-baseline gap-2 mb-3">
+                <span class="price">{{ p.price }}</span><small class="text-muted">ريال</small>
+              </div>
+              <div class="mt-auto d-grid gap-2">
+                <a class="btn btn-success" href="{{ p.store_url }}" target="_blank" rel="noopener noreferrer" aria-label="الذهاب لشراء {{ p.name }}">
+                  <i class="fa-solid fa-cart-shopping ms-1"></i> اشترِ الآن
+                </a>
+                <button class="btn btn-outline-primary"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#sellModal"
+                        data-product-id="{{ p.id }}"
+                        data-product-name="{{ p.name }}"
+                        data-product-price="{{ p.price|floatformat:2 }}">
+                  <i class="fa-solid fa-right-left ms-1"></i> بيع الجهاز بعد الشراء
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info text-center animate__animated animate__fadeIn">
+        <i class="fa-solid fa-circle-info ms-1"></i> لا توجد منتجات مطابقة لخيارات البحث.
+      </div>
+    {% endif %}
+  </div>
+</main>
+
+<!-- المودال: نموذج بيع الجهاز بعد الشراء -->
+<div class="modal fade" id="sellModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content needs-validation" novalidate method="post" action="{% url 'sell_request' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="product" id="sell_product_id">
+      <input type="hidden" name="purchase_price" id="sell_purchase_price">
+      <input type="hidden" name="payout_amount" id="sell_payout_amount">
+
+      <div class="modal-header bg-white">
+        <h5 class="modal-title">طلب بيع الجهاز — <span id="sell_product_name">—</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="alert alert-success fw-bold d-flex align-items-center" id="sell_notice">
+          <i class="fa-solid fa-sack-dollar ms-2"></i>
+          سيتم شراء الجهاز بمبلغ : <span id="sell_payout_text" class="ms-1">—</span> <span class="text-muted">ريال</span>
+        </div>
+
+        <div class="row g-2">
+          <div class="col-12">
+            <label class="form-label fw-bold" for="f_customer_name">اسم العميل (المسجل في تابي/تمارا)</label>
+            <input id="f_customer_name" name="customer_name" class="form-control" required minlength="3">
+            <div class="invalid-feedback">الرجاء إدخال اسم العميل</div>
+          </div>
+
+          <div class="col-sm-6">
+            <label class="form-label fw-bold" for="f_phone">رقم الجوال</label>
+            <input id="f_phone" name="phone" class="form-control" inputmode="tel" placeholder="05xxxxxxxx أو +9665xxxxxxx" required>
+            <div class="invalid-feedback">الرجاء إدخال رقم جوال صحيح</div>
+          </div>
+
+          <div class="col-sm-6">
+            <label class="form-label fw-bold" for="f_account">رقم الآيبان (لنفس العميل)</label>
+            <input id="f_account" name="account_number" class="form-control" placeholder="IBAN" required minlength="10">
+            <div class="invalid-feedback">الرجاء إدخال رقم الحساب</div>
+          </div>
+
+          <!-- الحقل الجديد: اسم البنك -->
+          <div class="col-sm-6">
+            <label class="form-label fw-bold" for="f_bank">اسم البنك</label>
+            <input id="f_bank" name="bank_name" class="form-control" placeholder="مثال: مصرف الراجحي" required minlength="2">
+            <div class="invalid-feedback">الرجاء إدخال اسم البنك</div>
+          </div>
+
+          <div class="col-sm-6">
+            <label class="form-label fw-bold" for="f_txn">رقم الطب </label>
+            <input id="f_txn" name="transaction_ref" class="form-control" placeholder="TXN-123456">
+          </div>
+
+          <div class="col-sm-6">
+            <label class="form-label fw-bold" for="f_proof">صورة إثبات الشراء (اختياري)</label>
+            <input id="f_proof" type="file" name="proof_image" class="form-control" accept="image/*">
+          </div>
+
+
+        </div>
+
+        <hr class="my-3">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <span class="text-muted">سعر الشراء:</span>
+          <div><strong id="sell_price_text">—</strong><span class="text-muted"> ريال</span></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-baseline mt-2">
+          <span class="text-muted">المبلغ المستلم:</span>
+          <div><strong id="sell_payout_text_2">—</strong><span class="text-muted"> ريال</span></div>
+        </div>
+        <p class="text-muted small mt-3"><i class="fa-solid fa-circle-exclamation ms-1"></i> يجب إرفاق صورة إثبات الشراء أو إدخال رقم الطلب.</p>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-between">
+        <span class="text-muted small"><i class="fa-solid fa-shield-halved ms-1"></i> يتم التحقق من صحة البيانات قبل الإرسال</span>
+        <button id="sellSubmit" type="submit" class="btn btn-success fw-bold px-4" disabled>
+          <i class="fa-regular fa-paper-plane ms-1"></i> إرسال الطلب
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer class="py-4">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <p class="m-0">© {{ now|date:"Y" }} مانس للتجارة — جميع الحقوق محفوظة</p>
+    <nav class="d-flex gap-3">
+      <a class="text-decoration-none" href="#"><i class="fa-solid fa-user-shield ms-1"></i> سياسة الخصوصية</a>
+      <a class="text-decoration-none" href="#"><i class="fa-solid fa-file-contract ms-1"></i> الشروط والأحكام</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // تعبئة المودال وحساب المبلغ (سعر الشراء - 30%)
+  const sellModal=document.getElementById('sellModal');
+  sellModal.addEventListener('show.bs.modal',(event)=>{
+    const btn=event.relatedTarget;
+    const id=btn.getAttribute('data-product-id');
+    const name=btn.getAttribute('data-product-name');
+    const price=parseFloat(btn.getAttribute('data-product-price')||0);
+    const payout=Math.max(0,price*0.70);
+
+    document.getElementById('sell_product_id').value=id;
+    document.getElementById('sell_purchase_price').value=price.toFixed(2);
+    document.getElementById('sell_payout_amount').value=payout.toFixed(2);
+
+    document.getElementById('sell_product_name').textContent=name||'—';
+    document.getElementById('sell_price_text').textContent=price.toLocaleString('ar-SA');
+    document.getElementById('sell_payout_text').textContent=payout.toLocaleString('ar-SA');
+    document.getElementById('sell_payout_text_2').textContent=payout.toLocaleString('ar-SA');
+
+    const submitBtn=document.getElementById('sellSubmit');
+    if(submitBtn) submitBtn.disabled=true;
+  });
+
+  // تحقق وتفعيل زر الإرسال (يشمل اسم البنك)
+  (function(){
+    const form   = sellModal.querySelector('form.needs-validation');
+    const submit = document.getElementById('sellSubmit');
+
+    const fName  = document.getElementById('f_customer_name');
+    const fPhone = document.getElementById('f_phone');
+    const fAcc   = document.getElementById('f_account');
+    const fBank  = document.getElementById('f_bank');      // جديد
+    const fProof = document.getElementById('f_proof');
+    const fTxn   = document.getElementById('f_txn');
+
+    const phoneOk   = v => /^(\+?9665\d{8}|05\d{8})$/.test((v||'').trim());
+    const accountOk = v => (v||'').trim().length >= 10;
+    const bankOk    = v => (v||'').trim().length >= 2;
+    const proofOrTxnOk = () => (fProof.files && fProof.files.length > 0) || ((fTxn.value||'').trim().length >= 4);
+
+    function canSubmit(){
+      const nameOK  = (fName.value||'').trim().length >= 3;
+      const phoneOK = phoneOk(fPhone.value);
+      const accOK   = accountOk(fAcc.value);
+      const bankOK  = bankOk(fBank.value);
+      const proofOK = proofOrTxnOk();
+      return nameOK && phoneOK && accOK && bankOK && proofOK;
+    }
+    function refresh(){ submit.disabled = !canSubmit(); }
+
+    ['input','change','keyup','paste','blur'].forEach(ev=>{
+      [fName,fPhone,fAcc,fBank,fProof,fTxn].forEach(el=> el.addEventListener(ev,refresh));
+    });
+
+    form.addEventListener('submit',e=>{
+      if(!canSubmit() || !form.checkValidity()){
+        e.preventDefault(); e.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    },false);
+  })();
+
+  // توست لرسائل Django
+  (function(){
+    const msgs=window.__serverMsgs||[]; if(!msgs.length) return;
+    const cont=document.getElementById('toastContainer');
+    msgs.forEach(m=>{
+      const level=(m.level||'info').toLowerCase();
+      const bg= level.includes('success')?'bg-success text-white'
+              : level.includes('error')?'bg-danger text-white'
+              : level.includes('warning')?'bg-warning text-dark'
+              : 'bg-primary text-white';
+      const toast=document.createElement('div');
+      toast.className=`toast border-0 toast-custom mb-2 ${bg}`;
+      toast.setAttribute('role','alert');toast.setAttribute('aria-live','assertive');toast.setAttribute('aria-atomic','true');
+      toast.innerHTML=`<div class="d-flex">
+        <div class="toast-body fw-semibold">${m.text}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="إغلاق"></button>
+      </div>`;
+      cont.appendChild(toast);
+      new bootstrap.Toast(toast,{delay:5000}).show();
+    });
+  })();
+
+  // تحسين إدخال رقم الجوال (اختياري): يحوّله تلقائيًا لصيغة +966
+  document.getElementById('f_phone')?.addEventListener('blur',function(){
+    let v=this.value.trim().replace(/\s+/g,'');
+    if(/^05\d{8}$/.test(v)) this.value='+966'+v.slice(1);
+  });
+</script>
+</body>
+</html>

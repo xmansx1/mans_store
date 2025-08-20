@@ -1,0 +1,47 @@
+/* ====== Base visual tweaks ====== */
+.bg-gradient{
+  /* نسخة نهائية (ما فيه تكرار) */
+  background: radial-gradient(900px 420px at 80% 0%, #1e293b, #0f172a);
+}
+
+.feature{
+  background:#f1f5f9;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  color:#0f172a;
+}
+
+.product-card img{
+  aspect-ratio:4/3;
+  object-fit:cover;
+}
+
+/* ظل وحركة خفيفة على البطاقات */
+.shadow-hover{
+  transition:transform .15s ease, box-shadow .25s ease;
+}
+.shadow-hover:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(0,0,0,.09);
+}
+
+/* نص بمقطعين مع دعم المعيار الجديد + WebKit */
+.two-lines{
+  display:-webkit-box;            /* WebKit old */
+  -webkit-box-orient:vertical;    /* WebKit old */
+  -webkit-line-clamp:2;           /* WebKit old */
+  line-clamp:2;                   /* Spec (لتختفي ملاحظة VS Code) */
+  overflow:hidden;
+}
+
+/* شريط الإعلان */
+.sticky-note{
+  background:#ecfccb;
+  border-block:1px solid #d9f99d;
+}
+button[disabled]{opacity:.65; cursor:not-allowed}
