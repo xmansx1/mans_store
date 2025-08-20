@@ -10,8 +10,7 @@ cloudinary==1.43.0
 django-cloudinary-storage==0.3.0
 
 # Django Admin (Jazzmin + Bootswatch)
-django-jazzmin==3.0.0
-
+ 
 
 # Django إضافات
 django-filter==25.1

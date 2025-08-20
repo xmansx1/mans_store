@@ -21,8 +21,7 @@ USE_TZ = True
 
 # ----------------- التطبيقات -----------------
 INSTALLED_APPS = [
-    "jazzmin",  # لوحة تحكم محسنة (يجب أن تسبق admin)
-
+ 
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -133,22 +132,3 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_SSL_REDIRECT = True
-
-# ----------------- إعدادات Jazzmin -----------------
-JAZZMIN_SETTINGS = {
-    "site_title": "لوحة التحكم - منصة المتجر",
-    "site_header": "منصة المتجر",
-    "site_brand": "إدارة المتجر",
-    "welcome_sign": "مرحباً بك في لوحة الإدارة",
-    "copyright": "حقوق النشر © منصور",
-    "show_ui_builder": False,
-
-    # أيقونات التطبيقات
-    "icons": {
-        "auth": "fas fa-users",
-        "products": "fas fa-store",
-    },
-
-    # الثيم
-    "theme": "lux",  # ممكن تغييره مثل (cyborg, cosmo, flatly, solar, minty, ...)
-}
