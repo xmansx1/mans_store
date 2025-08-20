@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url   # لإعداد قاعدة البيانات من DATABASE_URL
 
 # تحميل متغيرات البيئة من .env (محلياً)
 load_dotenv()
@@ -68,12 +69,13 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # ----------------- قاعدة البيانات -----------------
-# SQLite للتطوير (يمكن استبدالها بـ PostgreSQL لاحقاً)
+# قاعدة بيانات PostgreSQL من Render
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+        conn_max_age=600,
+        ssl_require=not DEBUG,  # يجبر على SSL في الإنتاج
+    )
 }
 
 # ----------------- الملفات الثابتة -----------------

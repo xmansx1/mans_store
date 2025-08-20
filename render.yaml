@@ -8,5 +8,33 @@ services:
       pip install -r requirements.txt
       python manage.py migrate --noinput
       python manage.py collectstatic --noinput
-      python manage.py create_admin
+      python manage.py createsuperuser --noinput || true
     startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings
+      - key: DATABASE_URL
+        value: postgresql://mans_store_db_user:tdkmBMJGODzHQz84SFocX94yoYRRBcxB@dpg-d2isr91r0fns738u5od0-a/mans_store_db
+      - key: SECRET_KEY
+        value: qa$0vxn_fu2u1%x4t5(574xe@rlju&-=!d5lx)fw^57x@j$gmd
+      - key: DEBUG
+        value: "false"
+      - key: ALLOWED_HOSTS
+        value: 127.0.0.1,localhost,mans-store.onrender.com
+      - key: TIME_ZONE
+        value: Asia/Riyadh
+      - key: TELEGRAM_ENABLED
+        value: "true"
+      - key: TELEGRAM_BOT_TOKEN
+        value: 7968607647:AAE9oDgTXQP20qvGQODA-LKc1j8PVGwSWM8
+      - key: TELEGRAM_CHAT_ID
+        value: "418840106"
+      - key: CLOUDINARY_URL
+        value: cloudinary://997257163374881:u5XPED3CQa2gd7PyHuEaw7BFsbY@dvptglfs2
+      # إنشاء superuser تلقائيًا
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: admin
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: admin@example.com
+      - key: DJANGO_SUPERUSER_PASSWORD
+        value: Aa100100Aa
